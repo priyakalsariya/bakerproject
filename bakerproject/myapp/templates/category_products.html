@@ -1,0 +1,177 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Page Header Start -->
+<div class="container-fluid page-header py-6 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container text-center pt-5 pb-3">
+
+        <h1 class="display-4 text-white animated slideInDown mb-3">
+            {{ category.name }}
+        </h1>
+
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb justify-content-center mb-0">
+
+                <li class="breadcrumb-item">
+                    <a class="text-white" href="{% url 'index' %}">
+                        Home
+                    </a>
+                </li>
+
+                <li class="breadcrumb-item">
+                    <a class="text-white" href="{% url 'product' %}">
+                        Products
+                    </a>
+                </li>
+
+                <li class="breadcrumb-item text-primary active"
+                    aria-current="page">
+                    {{ category.name }}
+                </li>
+
+            </ol>
+        </nav>
+
+    </div>
+</div>
+<!-- Page Header End -->
+
+
+<!-- Category Products Start -->
+<div class="container-xxl bg-light py-6">
+
+    <div class="container">
+
+
+
+        <!-- Products -->
+        <div class="row g-4">
+
+            {% for product in products %}
+
+            <div class="col-lg-4 col-md-6 wow fadeInUp"
+                 data-wow-delay="0.1s">
+
+                <div class="product-item d-flex flex-column bg-white rounded overflow-hidden h-100">
+
+                    <!-- Product Details -->
+                    <div class="text-center p-4">
+
+                        <div class="d-inline-block border border-primary rounded-pill px-3 py-1 mb-3">
+                            ₹{{ product.price }}
+                        </div>
+
+                        <h3 class="mb-3">
+                            {{ product.name }}
+                        </h3>
+
+                        <p class="mb-0">
+                            {{ product.description }}
+                        </p>
+
+                        <a href="{% url 'add_to_cart' product.id %}"
+                            class="btn btn-primary rounded-pill">
+
+                                <i class="fa fa-shopping-cart me-2"></i>
+                                    Add to Cart
+                        </a>
+
+                    </div>
+
+
+                    <!-- Product Image -->
+                    <div class="position-relative mt-auto">
+
+                        {% if product.image %}
+
+                            <img src="{{ product.image.url }}"
+                                 class="img-fluid w-100"
+                                 alt="{{ product.name }}">
+
+                        {% else %}
+
+                            <img src="{% static 'img/product-1.jpg' %}"
+                                 class="img-fluid w-100"
+                                 alt="{{ product.name }}">
+
+                        {% endif %}
+
+
+                        <!-- Hover Overlay -->
+                        <div class="product-overlay">
+
+                            <a href="{% url 'product_detail' product.id %}"
+                               class="btn btn-lg-square btn-outline-light rounded-circle">
+
+                                <i class="fa fa-eye text-primary"></i>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <!-- No Products -->
+            <div class="col-12 text-center">
+
+                <div class="bg-white rounded p-5">
+
+                    <i class="fa fa-birthday-cake fa-3x text-primary mb-4"></i>
+
+                    <h3 class="mb-3">
+                        No Products Available
+                    </h3>
+
+                    <p class="text-muted mb-4">
+                        There are currently no products available
+                        in the {{ category.name }} category.
+                    </p>
+
+                    <a href="{% url 'product' %}"
+                       class="btn btn-primary rounded-pill py-3 px-5">
+
+                        <i class="fa fa-arrow-left me-2"></i>
+                        Back to Categories
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- Back to Categories -->
+        {% if products %}
+
+        <div class="text-center mt-5">
+
+            <a href="{% url 'product' %}"
+               class="btn btn-primary rounded-pill py-3 px-5">
+
+                <i class="fa fa-arrow-left me-2"></i>
+                Back to Categories
+
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+<!-- Category Products End -->
+
+{% endblock content %}

@@ -1,0 +1,200 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Page Header -->
+
+<div class="container-fluid page-header py-6 wow fadeIn"
+     data-wow-delay="0.1s">
+
+    <div class="container text-center pt-5 pb-3">
+
+        <h1 class="display-4 text-white animated slideInDown mb-3">
+            Edit Profile
+        </h1>
+
+        <nav aria-label="breadcrumb">
+
+            <ol class="breadcrumb justify-content-center mb-0">
+
+                <li class="breadcrumb-item">
+                    <a class="text-white" href="{% url 'index' %}">
+                        Home
+                    </a>
+                </li>
+
+                <li class="breadcrumb-item">
+                    <a class="text-white" href="{% url 'profile' %}">
+                        Profile
+                    </a>
+                </li>
+
+                <li class="breadcrumb-item text-primary active"
+                    aria-current="page">
+
+                    Edit Profile
+
+                </li>
+
+            </ol>
+
+        </nav>
+
+    </div>
+
+</div>
+
+
+<!-- Edit Profile Section -->
+
+<div class="container-xxl py-6">
+
+    <div class="container">
+
+        <div class="row justify-content-center">
+
+            <div class="col-lg-7 col-md-9">
+
+                <div class="edit-profile-card">
+
+                    <!-- Heading -->
+
+                    <div class="text-center mb-4">
+
+                        <div class="edit-profile-icon mx-auto mb-3">
+
+                            <i class="fa fa-user-edit"></i>
+
+                        </div>
+
+                        <h2>
+                            Edit Your Profile
+                        </h2>
+
+                        <p class="text-muted">
+                            Update your personal information
+                        </p>
+
+                    </div>
+
+
+                    <!-- Form -->
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+
+                        <!-- Username -->
+
+                        <div class="edit-form-group">
+
+                            <label>
+                                Username
+                            </label>
+
+                            <input type="text"
+                                   class="form-control"
+                                   value="{{ user.username }}"
+                                   readonly>
+
+                            <small class="text-muted">
+                                Username cannot be changed.
+                            </small>
+
+                        </div>
+
+
+                        <!-- First Name -->
+
+                        <div class="edit-form-group">
+
+                            <label>
+                                First Name
+                            </label>
+
+                            <input type="text"
+                                   name="first_name"
+                                   class="form-control"
+                                   value="{{ user.first_name }}"
+                                   placeholder="Enter first name"
+                                   required>
+
+                        </div>
+
+
+                        <!-- Last Name -->
+
+                        <div class="edit-form-group">
+
+                            <label>
+                                Last Name
+                            </label>
+
+                            <input type="text"
+                                   name="last_name"
+                                   class="form-control"
+                                   value="{{ user.last_name }}"
+                                   placeholder="Enter last name"
+                                   required>
+
+                        </div>
+
+
+                        <!-- Email -->
+
+                        <div class="edit-form-group">
+
+                            <label>
+                                Email
+                            </label>
+
+                            <input type="email"
+                                   name="email"
+                                   class="form-control"
+                                   value="{{ user.email }}"
+                                   placeholder="Enter email"
+                                   required>
+
+                        </div>
+
+
+                        <!-- Buttons -->
+
+                        <div class="text-center mt-4">
+
+                            <button type="submit"
+                                    class="btn btn-primary rounded-pill py-3 px-5 me-2">
+
+                                <i class="fa fa-save me-2"></i>
+
+                                Save Changes
+
+                            </button>
+
+
+                            <a href="{% url 'profile' %}"
+                               class="btn btn-outline-primary rounded-pill py-3 px-5">
+
+                                <i class="fa fa-times me-2"></i>
+
+                                Cancel
+
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock content %}

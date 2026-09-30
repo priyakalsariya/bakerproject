@@ -1,0 +1,166 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Page Header -->
+
+<div class="container-fluid page-header py-6 wow fadeIn">
+
+    <div class="container text-center pt-5 pb-3">
+
+        <h1 class="display-4 text-white">
+            Product Details
+        </h1>
+
+        <nav aria-label="breadcrumb">
+
+            <ol class="breadcrumb justify-content-center mb-0">
+
+                <li class="breadcrumb-item">
+                    <a class="text-white"
+                       href="{% url 'index' %}">
+                        Home
+                    </a>
+                </li>
+
+                <li class="breadcrumb-item">
+                    <a class="text-white"
+                       href="{% url 'product' %}">
+                        Products
+                    </a>
+                </li>
+
+                <li class="breadcrumb-item text-primary active">
+                    {{ product.name }}
+                </li>
+
+            </ol>
+
+        </nav>
+
+    </div>
+
+</div>
+
+
+<!-- Product Detail -->
+
+<div class="container-xxl py-6">
+
+    <div class="container">
+
+        <div class="row g-5 align-items-center">
+
+            <!-- Product Image -->
+
+            <div class="col-lg-6">
+
+                <div class="product-detail-image">
+
+                    {% if product.image %}
+
+                    <img src="{{ product.image.url }}"
+                         class="img-fluid"
+                         alt="{{ product.name }}">
+
+                    {% else %}
+
+                    <img src="{% static 'img/product-1.jpg' %}"
+                         class="img-fluid"
+                         alt="{{ product.name }}">
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- Product Information -->
+
+            <div class="col-lg-6">
+
+                <p class="text-primary text-uppercase mb-2">
+                    {{ product.category.name }}
+                </p>
+
+                <h1 class="display-5 mb-3">
+                    {{ product.name }}
+                </h1>
+
+                <h3 class="text-primary mb-4">
+                    ₹{{ product.price }}
+                </h3>
+
+                <p class="mb-4">
+                    {{ product.description }}
+                </p>
+
+
+                <!-- Stock -->
+
+                {% if product.stock > 0 %}
+
+                <p class="text-success mb-4">
+
+                    <i class="fa fa-check-circle me-2"></i>
+
+                    In Stock
+
+                </p>
+
+                {% else %}
+
+                <p class="text-danger mb-4">
+
+                    <i class="fa fa-times-circle me-2"></i>
+
+                    Out of Stock
+
+                </p>
+
+                {% endif %}
+
+
+                <!-- Add To Cart -->
+
+                {% if product.stock > 0 %}
+
+                <a href="{% url 'add_to_cart' product.id %}"
+                   class="btn btn-primary rounded-pill py-3 px-5">
+
+                    <i class="fa fa-shopping-cart me-2"></i>
+
+                    Add to Cart
+
+                </a>
+
+                {% else %}
+
+                <button class="btn btn-secondary rounded-pill py-3 px-5"
+                        disabled>
+
+                    Out of Stock
+
+                </button>
+
+                {% endif %}
+
+
+                <a href="{% url 'product' %}"
+                   class="btn btn-outline-primary rounded-pill py-3 px-5 ms-2">
+
+                    Back to Products
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock content %}

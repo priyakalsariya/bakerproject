@@ -1,0 +1,108 @@
+{% extends 'main.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid page-header py-6 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container text-center pt-5 pb-3">
+            <h1 class="display-4 text-white animated slideInDown mb-3">Register</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb justify-content-center mb-0">
+                    <li class="breadcrumb-item"><a class="text-white" href="{% url 'index' %}">Home</a></li>
+                    <li class="breadcrumb-item"><a class="text-white" href="#">Pages</a></li>
+                    <li class="breadcrumb-item text-primary active" aria-current="page">Register</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+<div class="register-section">
+
+    <div class="register-card">
+
+        <h2>Create Your Account</h2>
+
+        <p>Join us and enjoy our delicious bakery products.</p>
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text"
+                       name="username"
+                       placeholder="Enter username"
+                       required>
+            </div>
+
+                    <!-- First Name -->
+            <div class="form-group">
+                <label>First Name</label>
+                <input type="text"
+                    name="first_name"
+                    placeholder="Enter first name"
+                    required>
+            </div>
+
+
+            <!-- Last Name -->
+            <div class="form-group">
+                <label>Last Name</label>
+                <input type="text"
+                    name="last_name"
+                    placeholder="Enter last name"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email"
+                       name="email"
+                       placeholder="Enter Gmail address"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password"
+                       name="password"
+                       placeholder="Enter password"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <input type="password"
+                       name="confirm_password"
+                       placeholder="Confirm password"
+                       required>
+            </div>
+
+            <button type="submit" class="register-btn">
+                Register
+            </button>
+
+        </form>
+
+        <p class="login-text">
+            Already have an account?
+            <a href="{% url 'login' %}">Login</a>
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}

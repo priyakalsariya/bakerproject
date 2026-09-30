@@ -1,0 +1,301 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Page Header Start -->
+<div class="container-fluid page-header py-6 wow fadeIn"
+     data-wow-delay="0.1s">
+
+    <div class="container text-center pt-5 pb-3">
+
+        {% if search_query %}
+            <h1 class="display-4 text-white animated slideInDown mb-3">
+                Search Results
+            </h1>
+        {% else %}
+            <h1 class="display-4 text-white animated slideInDown mb-3">
+                Bakery Categories
+            </h1>
+        {% endif %}
+
+        <nav aria-label="breadcrumb animated slideInDown">
+
+            <ol class="breadcrumb justify-content-center mb-0">
+
+                <li class="breadcrumb-item">
+                    <a class="text-white"
+                       href="{% url 'index' %}">
+                        Home
+                    </a>
+                </li>
+
+                <li class="breadcrumb-item text-primary active"
+                    aria-current="page">
+                    Products
+                </li>
+
+            </ol>
+
+        </nav>
+
+    </div>
+
+</div>
+<!-- Page Header End -->
+
+{% if search_query %}
+
+<!-- ================= SEARCH RESULTS ================= -->
+
+<div class="container-xxl py-6">
+
+    <div class="container">
+
+        <!-- Search Heading -->
+
+        <div class="text-center mx-auto mb-5"
+             style="max-width: 600px;">
+
+            <p class="text-primary text-uppercase mb-2">
+                // Search
+            </p>
+
+            <h1 class="display-6 mb-3">
+                Search Results
+            </h1>
+
+            <p>
+                Products matching
+                <strong>"{{ search_query }}"</strong>
+            </p>
+
+        </div>
+
+
+        <!-- Products -->
+
+        <div class="row g-4">
+
+            {% for product in products %}
+
+            <div class="col-lg-4 col-md-6 wow fadeInUp"
+                 data-wow-delay="0.1s">
+
+                <div class="product-item d-flex flex-column bg-light rounded overflow-hidden h-100">
+
+                    <!-- Product Details -->
+
+                    <div class="text-center p-4">
+
+                        <div class="d-inline-block border border-primary rounded-pill px-3 py-1 mb-3">
+                            ₹{{ product.price }}
+                        </div>
+
+                        <h3 class="mb-3">
+                            {{ product.name }}
+                        </h3>
+
+                        <p class="mb-0">
+                            {{ product.description }}
+                        </p>
+
+                    </div>
+
+
+                    <!-- Product Image -->
+
+                    <div class="position-relative mt-auto">
+
+                        {% if product.image %}
+
+                            <img src="{{ product.image.url }}"
+                                 class="img-fluid w-100"
+                                 alt="{{ product.name }}">
+
+                        {% else %}
+
+                            <img src="{% static 'img/product-1.jpg' %}"
+                                 class="img-fluid w-100"
+                                 alt="{{ product.name }}">
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <!-- No Products Found -->
+
+            <div class="col-12 text-center">
+
+                <div class="bg-light rounded p-5">
+
+                    <i class="fa fa-search fa-3x text-primary mb-4"></i>
+
+                    <h3 class="mb-3">
+                        No Products Found
+                    </h3>
+
+                    <p class="text-muted mb-4">
+                        Sorry, we couldn't find any product
+                        matching "{{ search_query }}".
+                    </p>
+
+                    <a href="{% url 'product' %}"
+                       class="btn btn-primary rounded-pill py-3 px-5">
+
+                        View Categories
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= SEARCH RESULTS END ================= -->
+
+{% else %}
+<!-- Categories Start -->
+
+<div class="container-xxl py-6">
+
+    <div class="container">
+        <!-- Search Bar -->
+<div class="row justify-content-center mb-5">
+
+    <div class="col-lg-6 col-md-8">
+
+        <form method="GET"
+              action="{% url 'product' %}"
+              class="d-flex">
+
+            <input type="text"
+                   name="search"
+                   value="{{ search_query|default:'' }}"
+                   class="form-control rounded-pill py-3 px-4"
+                   placeholder="Search bakery products...">
+
+            <button type="submit"
+                    class="btn btn-primary rounded-pill px-4 ms-2">
+                <i class="fa fa-search"></i>
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+        <!-- Heading -->
+
+        <div class="text-center mx-auto mb-5"
+             style="max-width: 600px;">
+
+            <p class="text-primary text-uppercase mb-2">
+                // Bakery Categories
+            </p>
+
+            <h1 class="display-6 mb-4">
+                Explore Our Bakery Categories
+            </h1>
+
+            <p>
+                Discover freshly baked cakes, breads, cookies,
+                pastries and more.
+            </p>
+
+        </div>
+
+
+        <!-- Categories -->
+
+        <div class="row g-4">
+
+            {% for category in categories %}
+
+            <div class="col-lg-4 col-md-6 wow fadeInUp"
+                 data-wow-delay="0.1s">
+
+                <div class="category-item bg-light rounded overflow-hidden h-100">
+
+                    <!-- Image -->
+
+                    <div class="position-relative">
+
+                        {% if category.image %}
+
+                            <img src="{{ category.image.url }}"
+                                 class="img-fluid w-100 category-image"
+                                 alt="{{ category.name }}">
+
+                        {% else %}
+
+                            <img src="{% static 'img/product-1.jpg' %}"
+                                 class="img-fluid w-100 category-image"
+                                 alt="{{ category.name }}">
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Content -->
+
+                    <div class="text-center p-4">
+
+                        <h3 class="mb-3">
+                            {{ category.name }}
+                        </h3>
+
+                        <p class="mb-4">
+                            {{ category.description }}
+                        </p>
+
+                        <a href="{% url 'category_products' category.id %}"
+                           class="btn btn-primary rounded-pill py-2 px-4">
+
+                            View Products
+
+                            <i class="fa fa-arrow-right ms-2"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <div class="col-12 text-center">
+
+                <p class="text-muted">
+                    No categories available.
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Categories End -->
+
+{% endif %}
+{% endblock content %}

@@ -1,0 +1,143 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Page Header -->
+<div class="container-fluid page-header py-6 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container text-center pt-5 pb-3">
+        <h1 class="display-4 text-white animated slideInDown mb-3">
+            My Profile
+        </h1>
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item">
+                    <a class="text-white" href="{% url 'index' %}">Home</a>
+                </li>
+
+                <li class="breadcrumb-item text-primary active"
+                    aria-current="page">
+                    Profile
+                </li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+
+<!-- Profile Section -->
+<div class="container-xxl py-6">
+    <div class="container">
+
+        <div class="row justify-content-center">
+
+            <div class="col-lg-7 col-md-9">
+
+                <div class="profile-card bg-light rounded p-5">
+
+                    <!-- Profile Header -->
+                    <div class="text-center mb-4">
+
+                        <div class="profile-icon mx-auto mb-3">
+                            <i class="fa fa-user"></i>
+                        </div>
+
+                        <h2 class="mb-1">
+                            {{ user.first_name }} {{ user.last_name }}
+                        </h2>
+
+                        <p class="text-muted mb-0">
+                            Happy Bakery Customer
+                        </p>
+
+                    </div>
+
+
+                    <!-- Profile Information -->
+                    <div class="profile-info">
+
+                        <div class="profile-row">
+
+                            <div class="profile-label">
+                                <i class="fa fa-user text-primary me-2"></i>
+                                Username
+                            </div>
+
+                            <div class="profile-value">
+                                {{ user.username }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="profile-row">
+
+                            <div class="profile-label">
+                                <i class="fa fa-envelope text-primary me-2"></i>
+                                Email
+                            </div>
+
+                            <div class="profile-value">
+                                {{ user.email|default:"Not provided" }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="profile-row">
+
+                            <div class="profile-label">
+                                <i class="fa fa-id-card text-primary me-2"></i>
+                                Full Name
+                            </div>
+
+                            <div class="profile-value">
+                                {{ user.first_name|default:"Not provided" }}
+                            </div>
+
+                        </div>
+
+                        <div class="profile-row">
+
+                            <div class="profile-label">
+                                <i class="fa fa-calendar text-primary me-2"></i>
+                                Member Since
+                            </div>
+
+                            <div class="profile-value">
+                                {{ user.date_joined|date:"d M Y" }}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Buttons -->
+                    <div class="text-center mt-4">
+
+                        <a href="{% url 'edit_profile' %}"
+                           class="btn btn-primary rounded-pill py-3 px-5 me-2">
+                            <i class="fa fa-edit me-2"></i>
+                            Edit Profile
+                        </a>
+
+                        <a href="{% url 'logout' %}"
+                           class="btn btn-outline-primary rounded-pill py-3 px-5">
+                            <i class="fa fa-sign-out-alt me-2"></i>
+                            Logout
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock content %}

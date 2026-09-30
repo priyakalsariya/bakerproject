@@ -1,0 +1,596 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Page Header Start -->
+
+<div class="container-fluid page-header py-6 wow fadeIn"
+     data-wow-delay="0.1s">
+
+<div class="container text-center pt-5 pb-3">
+
+    <h1 class="display-4 text-white animated slideInDown mb-3">
+        Discover Happy Bakery
+    </h1>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb justify-content-center mb-0">
+
+            <li class="breadcrumb-item">
+                <a class="text-white"
+                   href="{% url 'index' %}">
+                    Home
+                </a>
+            </li>
+
+            <li class="breadcrumb-item">
+                <a class="text-white"
+                   href="{% url 'about' %}">
+                    About Us
+                </a>
+            </li>
+
+            <li class="breadcrumb-item text-primary active"
+                aria-current="page">
+                Read More
+            </li>
+
+        </ol>
+    </nav>
+
+</div>
+
+
+</div>
+<!-- Page Header End -->
+
+<!-- Welcome Section Start -->
+
+<div class="container-xxl py-6">
+
+
+<div class="container">
+
+    <div class="row align-items-center g-5">
+
+        <div class="col-lg-6 wow fadeInUp"
+             data-wow-delay="0.1s">
+
+            <p class="text-primary text-uppercase mb-2">
+                // Welcome To Happy Bakery
+            </p>
+
+            <h1 class="display-6 mb-4">
+                More Than Just A Bakery
+            </h1>
+
+            <p class="mb-4">
+                Happy Bakery is a place where fresh ingredients,
+                traditional baking, and creative ideas come together.
+                We create delicious treats for everyday moments and
+                special celebrations.
+            </p>
+
+            <p class="mb-4">
+                Our bakery offers a variety of freshly prepared cakes,
+                pastries, breads, cookies, cupcakes, and desserts.
+                Every product is prepared with care to provide a
+                wonderful taste and memorable experience.
+            </p>
+
+            <p class="mb-4">
+                We believe that happiness can be found in simple
+                moments — a slice of cake with family, a pastry with
+                your morning tea, or a beautifully decorated cake at
+                your birthday celebration.
+            </p>
+
+            <a href="{% url 'product' %}"
+               class="btn btn-primary rounded-pill py-3 px-5">
+                View Our Products
+            </a>
+
+        </div>
+
+
+        <div class="col-lg-6 wow fadeInUp"
+             data-wow-delay="0.5s">
+
+            <img src="{% static 'img/about-3.jpeg' %}"
+                 class="img-fluid rounded"
+                 alt="Happy Bakery">
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+<!-- Welcome Section End -->
+
+<!-- Our Values Start -->
+
+<div class="container-fluid bg-light py-6">
+
+
+<div class="container">
+
+    <div class="text-center mx-auto mb-5"
+         style="max-width: 650px;">
+
+        <p class="text-primary text-uppercase mb-2">
+            // What We Believe
+        </p>
+
+        <h1 class="display-6 mb-4">
+            The Values Behind Every Bake
+        </h1>
+
+        <p>
+            We keep our values simple and put them into every product
+            we create.
+        </p>
+
+    </div>
+
+
+    <div class="row g-4">
+
+        <div class="col-lg-4 col-md-6">
+
+            <div class="bg-white text-center p-5 h-100">
+
+                <i class="fa fa-leaf fa-3x text-primary mb-4"></i>
+
+                <h4 class="mb-3">
+                    Quality First
+                </h4>
+
+                <p class="mb-0">
+                    We believe good baking starts with good ingredients.
+                    We focus on quality to create delicious and
+                    satisfying bakery products.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-4 col-md-6">
+
+            <div class="bg-white text-center p-5 h-100">
+
+                <i class="fa fa-heart fa-3x text-primary mb-4"></i>
+
+                <h4 class="mb-3">
+                    Made With Care
+                </h4>
+
+                <p class="mb-0">
+                    From mixing and baking to decoration and packaging,
+                    we pay attention to every detail.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-4 col-md-6">
+
+            <div class="bg-white text-center p-5 h-100">
+
+                <i class="fa fa-smile-o fa-3x text-primary mb-4"></i>
+
+                <h4 class="mb-3">
+                    Customer Happiness
+                </h4>
+
+                <p class="mb-0">
+                    Your happiness is what inspires us to keep creating
+                    better products and experiences.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+<!-- Our Values End -->
+
+<!-- Our Specialties Start -->
+
+<div class="container-xxl py-6">
+
+
+<div class="container">
+
+    <div class="row g-5 align-items-center">
+
+        <div class="col-lg-5">
+
+            <p class="text-primary text-uppercase mb-2">
+                // Our Specialties
+            </p>
+
+            <h1 class="display-6 mb-4">
+                Something Delicious For Everyone
+            </h1>
+
+            <p class="mb-4">
+                Whether you love chocolate, vanilla, fresh cream,
+                fruity flavors, or classic bakery treats, Happy Bakery
+                has something to satisfy every craving.
+            </p>
+
+            <p class="mb-4">
+                We also create customized cakes according to your
+                celebration, theme, flavor, and design preferences.
+            </p>
+
+            <a href="{% url 'contact' %}"
+               class="btn btn-primary rounded-pill py-3 px-5">
+                Order For Your Occasion
+            </a>
+
+        </div>
+
+
+        <div class="col-lg-7">
+
+            <div class="row g-4">
+
+                <div class="col-sm-6">
+
+                    <div class="border p-4 h-100">
+
+                        <i class="fa fa-birthday-cake fa-2x text-primary mb-3"></i>
+
+                        <h5>
+                            Celebration Cakes
+                        </h5>
+
+                        <p class="mb-0">
+                            Beautiful cakes for birthdays,
+                            anniversaries, weddings, and special
+                            occasions.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-sm-6">
+
+                    <div class="border p-4 h-100">
+
+                        <i class="fa fa-star fa-2x text-primary mb-3"></i>
+
+                        <h5>
+                            Custom Cakes
+                        </h5>
+
+                        <p class="mb-0">
+                            Personalized cakes designed according
+                            to your ideas and celebrations.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-sm-6">
+
+                    <div class="border p-4 h-100">
+
+                        <i class="fa fa-coffee fa-2x text-primary mb-3"></i>
+
+                        <h5>
+                            Fresh Pastries
+                        </h5>
+
+                        <p class="mb-0">
+                            Soft and delicious pastries that are
+                            perfect with tea or coffee.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-sm-6">
+
+                    <div class="border p-4 h-100">
+
+                        <i class="fa fa-star-o fa-2x text-primary mb-3"></i>
+
+                        <h5>
+                            Cookies & Treats
+                        </h5>
+
+                        <p class="mb-0">
+                            Crunchy, sweet, and freshly baked treats
+                            for every mood.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+<!-- Our Specialties End -->
+
+<!-- Baking Philosophy Start -->
+
+<div class="container-fluid bg-light py-6">
+
+
+<div class="container">
+
+    <div class="row g-5 align-items-center">
+
+        <div class="col-lg-6">
+
+            <img src="{% static 'img/about-2.jpg' %}"
+                 class="img-fluid rounded"
+                 alt="Freshly baked products">
+
+        </div>
+
+
+        <div class="col-lg-6">
+
+            <p class="text-primary text-uppercase mb-2">
+                // Our Baking Philosophy
+            </p>
+
+            <h1 class="display-6 mb-4">
+                Simple Ingredients. Great Taste.
+            </h1>
+
+            <p class="mb-4">
+                We believe great bakery products don't need to be
+                complicated. The right ingredients, the right
+                techniques, and a passion for baking can create
+                something truly special.
+            </p>
+
+            <div class="mb-4">
+
+                <h5>
+                    <i class="fa fa-check text-primary me-2"></i>
+                    Freshly Prepared
+                </h5>
+
+                <p>
+                    We focus on freshness so that every bite tastes
+                    as delicious as possible.
+                </p>
+
+            </div>
+
+
+            <div class="mb-4">
+
+                <h5>
+                    <i class="fa fa-check text-primary me-2"></i>
+                    Beautifully Crafted
+                </h5>
+
+                <p>
+                    Our cakes and desserts are carefully decorated
+                    to look as good as they taste.
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <h5>
+                    <i class="fa fa-check text-primary me-2"></i>
+                    Always Improving
+                </h5>
+
+                <p>
+                    We continue experimenting with flavors and ideas
+                    to bring new treats to our customers.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+<!-- Baking Philosophy End -->
+
+<!-- How We Work Start -->
+
+<div class="container-xxl py-6">
+
+
+<div class="container">
+
+    <div class="text-center mx-auto mb-5"
+         style="max-width: 650px;">
+
+        <p class="text-primary text-uppercase mb-2">
+            // How We Work
+        </p>
+
+        <h1 class="display-6 mb-4">
+            From Your Idea To Your Celebration
+        </h1>
+
+    </div>
+
+
+    <div class="row g-4">
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="text-center">
+
+                <div class="mb-4">
+                    <span class="display-5 text-primary">
+                        01
+                    </span>
+                </div>
+
+                <h5>
+                    Choose Your Treat
+                </h5>
+
+                <p>
+                    Browse our range of cakes, pastries, cookies,
+                    and desserts.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="text-center">
+
+                <div class="mb-4">
+                    <span class="display-5 text-primary">
+                        02
+                    </span>
+                </div>
+
+                <h5>
+                    Customize
+                </h5>
+
+                <p>
+                    Choose your preferred flavor, design, size,
+                    and special requirements.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="text-center">
+
+                <div class="mb-4">
+                    <span class="display-5 text-primary">
+                        03
+                    </span>
+                </div>
+
+                <h5>
+                    We Bake
+                </h5>
+
+                <p>
+                    Our bakers prepare your order with care and
+                    attention to detail.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="text-center">
+
+                <div class="mb-4">
+                    <span class="display-5 text-primary">
+                        04
+                    </span>
+                </div>
+
+                <h5>
+                    Enjoy
+                </h5>
+
+                <p>
+                    Your delicious Happy Bakery creation is ready
+                    for your special moment.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+<!-- How We Work End -->
+
+<!-- Customer Promise Start -->
+
+<div class="container-fluid bg-primary py-6">
+
+
+<div class="container text-center">
+
+    <p class="text-white text-uppercase mb-2">
+        // Our Promise
+    </p>
+
+    <h1 class="display-6 text-white mb-4">
+        Every Celebration Deserves Something Sweet
+    </h1>
+
+    <p class="text-white mb-4 mx-auto"
+       style="max-width: 700px;">
+
+        At Happy Bakery, we are committed to creating fresh,
+        delicious, and beautiful bakery products that become a
+        memorable part of your special moments.
+
+    </p>
+
+    <a href="{% url 'contact' %}"
+       class="btn btn-light rounded-pill py-3 px-5 me-2">
+        Contact Us
+    </a>
+
+    <a href="{% url 'product' %}"
+       class="btn btn-dark rounded-pill py-3 px-5">
+        Explore Products
+    </a>
+
+</div>
+
+</div>
+<!-- Customer Promise End -->
+
+{% endblock content %}
