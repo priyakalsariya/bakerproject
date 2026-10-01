@@ -231,23 +231,23 @@
 
                     <!-- Image -->
 
-                    <div class="position-relative">
+                <a href="{% url 'category_products' category.id %}" class="d-block">
 
-                        {% if category.image %}
+                    {% if category.image %}
 
-                            <img src="{{ category.image.url }}"
-                                 class="img-fluid w-100 category-image"
-                                 alt="{{ category.name }}">
+                        <img src="{{ category.image.url }}"
+                            class="img-fluid w-100 category-image"
+                            alt="{{ category.name }}">
 
-                        {% else %}
+                    {% else %}
 
-                            <img src="{% static 'img/product-1.jpg' %}"
-                                 class="img-fluid w-100 category-image"
-                                 alt="{{ category.name }}">
+                        <img src="{% static 'img/product-1.jpg' %}"
+                            class="img-fluid w-100 category-image"
+                            alt="{{ category.name }}">
 
-                        {% endif %}
+                    {% endif %}
 
-                    </div>
+                </a>
 
 
                     <!-- Content -->
@@ -258,20 +258,12 @@
                             {{ category.name }}
                         </h3>
 
-                        <p class="mb-4">
+                        <p class="mb-0">
                             {{ category.description }}
                         </p>
 
-                        <a href="{% url 'category_products' category.id %}"
-                           class="btn btn-primary rounded-pill py-2 px-4">
+                    </div>  
 
-                            View Products
-
-                            <i class="fa fa-arrow-right ms-2"></i>
-
-                        </a>
-
-                    </div>
 
                 </div>
 

@@ -136,11 +136,17 @@ def product_detail(request, product_id):
         id=product_id
     )
 
+    is_wishlisted = Wishlist.objects.filter(
+        user=request.user,
+        product=product
+    ).exists()
+
     return render(
         request,
         'product_detail.html',
         {
-            'product': product
+            'product': product,
+            'is_wishlisted':is_wishlisted
         }
     )
 
@@ -299,4 +305,139 @@ def remove_from_cart(request, item_id):
         'success': True,
         'cart_total': str(cart_total)
     })
+
+@login_required
+def add_to_wishlist(request,product_id):
+    product=get_object_or_404(Product,id=product_id)
+
+    Wishlist.objects.get_or_create(
+        user=request.user,
+        product=product
+    )
+
+    return redirect('wishlist')
+
+@login_required
+def wishlist(request):
+    wishlist_items=Wishlist.objects.filter(
+        user=request.user
+    ).select_related('product')
+
+    return render(request,'wishlist.html',{'wishlist_items':wishlist_items})
+
+@login_required
+def remove_from_wishlist(request,wishlist_id):
+    wishlist_item=get_object_or_404(
+        Wishlist,
+        id=wishlist_id,
+        user=request.user
+    )
+    wishlist_item.delete()
+
+    return redirect('wishlist')
+
+@login_required
+def move_wishlist_to_cart(request,wishlist_id):
+
+    wishlist_item=get_object_or_404(
+        Wishlist,
+        id=wishlist_id,
+        user=request.user
+    )
+
+    product=wishlist_item.product
+
+    cart,created=Cart.objects.get_or_create(
+        user=request.user
+    )
+
+    cart_item,created=CartItems.objects.get_or_create(
+        cart=cart,
+        products=product
+    )
+
+    if not created:
+        cart_item.quentity+=1
+        cart_item.save()
+
+    wishlist_item.delete()
+
+    return redirect('cart')
+
+@login_required
+def checkout(request):
+    cart=get_object_or_404(Cart,user=request.user)
+
+    cart_items=cart.items.select_related('products').all()
+
+    if not cart_items.exists():
+        return redirect('cart')
+
+    total=sum(
+        item.total_price
+        for item in cart_items
+    )
+
+    if request.method=="POST":
+        full_name=request.POST.get('full_name')
+        phone=request.POST.get('phone')
+        address=request.POST.get('address')
+        city=request.POST.get('city')
+        state=request.POST.get('state')
+        pincode=request.POST.get('pincode')
+        payment_method=request.POST.get('payment_method')
+
+        if not all([full_name,phone,address,city,state,pincode,payment_method]):
+            return render(request,'checkout.html',{'cart_items':cart_items,'total':total,'error':'Please fill all the required fields'})
+
+        order=Order.objects.create(
+            user=request.user,
+            full_name=full_name,
+            phone=phone,
+            address=address,
+            city=city,
+            state=state,
+            pincode=pincode,
+            payment_method=payment_method,
+            total_amount=total
+        )
+
+        for item in cart_items:
+            OrderItem.objects.create(
+                order=order,
+                product=item.products,
+                quentity=item.quentity,
+                price=item.products.price
+            )
+        cart_items.delete()
+
+        return redirect('order_success',order_id=order.id)
+    
+    return render(request,'checkout.html',{'cart_items':cart_items,'total':total})
+
+@login_required
+def order_success(request,order_id):
+    order=get_object_or_404(Order,id=order_id,user=request.user)
+
+    return render(request,'order_success.html',{'order':order})
+
+@login_required
+def my_orders(request):
+    orders=Order.objects.filter(user=request.user).order_by('-created_at')
+
+    return render(request,'my_orders.html',{'orders':orders})
+
+@login_required
+def order_detail(request, order_id):
+
+    order = get_object_or_404(
+        Order.objects.prefetch_related(
+            'items__product'
+        ),
+        id=order_id,
+        user=request.user
+    )
+
+    return render(request,'order_detail.html',{'order': order})
+
 

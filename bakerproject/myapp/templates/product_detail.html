@@ -81,17 +81,28 @@
 
             <div class="col-lg-6">
 
+                <!-- Category -->
+
                 <p class="text-primary text-uppercase mb-2">
                     {{ product.category.name }}
                 </p>
+
+
+                <!-- Product Name -->
 
                 <h1 class="display-5 mb-3">
                     {{ product.name }}
                 </h1>
 
+
+                <!-- Price -->
+
                 <h3 class="text-primary mb-4">
                     ₹{{ product.price }}
                 </h3>
+
+
+                <!-- Description -->
 
                 <p class="mb-4">
                     {{ product.description }}
@@ -123,37 +134,118 @@
                 {% endif %}
 
 
-                <!-- Add To Cart -->
+                <!-- Action Buttons -->
 
-                {% if product.stock > 0 %}
+                <div class="mt-4">
 
-                <a href="{% url 'add_to_cart' product.id %}"
-                   class="btn btn-primary rounded-pill py-3 px-5">
+                    <div class="d-flex align-items-center">
 
-                    <i class="fa fa-shopping-cart me-2"></i>
+                        <!-- Add to Cart -->
 
-                    Add to Cart
+                        {% if product.stock > 0 %}
 
-                </a>
+                        <a href="{% url 'add_to_cart' product.id %}"
+                           class="btn btn-primary rounded-pill py-3 px-5">
 
-                {% else %}
+                            <i class="fa fa-shopping-cart me-2"></i>
 
-                <button class="btn btn-secondary rounded-pill py-3 px-5"
-                        disabled>
+                            Add to Cart
 
-                    Out of Stock
+                        </a>
 
-                </button>
+                        {% else %}
 
-                {% endif %}
+                        <button class="btn btn-secondary rounded-pill py-3 px-5"
+                                disabled>
+
+                            <i class="fa fa-times-circle me-2"></i>
+
+                            Out of Stock
+
+                        </button>
+
+                        {% endif %}
 
 
-                <a href="{% url 'product' %}"
-                   class="btn btn-outline-primary rounded-pill py-3 px-5 ms-2">
+                        <!-- Wishlist -->
 
-                    Back to Products
+                        {% if user.is_authenticated %}
 
-                </a>
+                            {% if is_wishlisted %}
+
+                            <!-- Already in Wishlist -->
+
+                            <a href="{% url 'add_to_wishlist' product.id %}"
+                               class="btn btn-outline-danger rounded-circle ms-3"
+                               style="width: 52px;
+                                      height: 52px;
+                                      display: flex;
+                                      align-items: center;
+                                      justify-content: center;"
+                               title="Remove from Wishlist">
+
+                                <i class="fa fa-heart"
+                                   style="color: red;"></i>
+
+                            </a>
+
+                            {% else %}
+
+                            <!-- Not in Wishlist -->
+
+                            <a href="{% url 'add_to_wishlist' product.id %}"
+                               class="btn btn-outline-primary rounded-circle ms-3"
+                               style="width: 52px;
+                                      height: 52px;
+                                      display: flex;
+                                      align-items: center;
+                                      justify-content: center;"
+                               title="Add to Wishlist">
+
+                                <i class="fa fa-heart"></i>
+
+                            </a>
+
+                            {% endif %}
+
+                        {% else %}
+
+                        <!-- Login to Wishlist -->
+
+                        <a href="{% url 'login' %}"
+                           class="btn btn-outline-primary rounded-circle ms-3"
+                           style="width: 52px;
+                                  height: 52px;
+                                  display: flex;
+                                  align-items: center;
+                                  justify-content: center;"
+                           title="Login to add to Wishlist">
+
+                            <i class="fa fa-heart"></i>
+
+                        </a>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Back to Products -->
+
+                    <div class="mt-4">
+
+                        <a href="{% url 'product' %}"
+                           class="btn btn-outline-secondary rounded-pill py-2 px-4">
+
+                            <i class="fa fa-arrow-left me-2"></i>
+
+                            Back to Products
+
+                        </a>
+
+                    </div>
+
+                </div>
 
             </div>
 

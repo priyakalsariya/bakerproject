@@ -1,0 +1,218 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Page Header -->
+
+<div class="container-fluid page-header py-6 wow fadeIn">
+
+    <div class="container text-center pt-5 pb-3">
+
+        <h1 class="display-4 text-white">
+            Order Details
+        </h1>
+
+        <nav aria-label="breadcrumb">
+
+            <ol class="breadcrumb justify-content-center mb-0">
+
+                <li class="breadcrumb-item">
+                    <a class="text-white"
+                       href="{% url 'index' %}">
+                        Home
+                    </a>
+                </li>
+
+                <li class="breadcrumb-item">
+                    <a class="text-white"
+                       href="{% url 'my_orders' %}">
+                        My Orders
+                    </a>
+                </li>
+
+                <li class="breadcrumb-item text-primary active">
+                    Order #{{ order.id }}
+                </li>
+
+            </ol>
+
+        </nav>
+
+    </div>
+
+</div>
+
+
+<!-- Order Details -->
+
+<div class="container-xxl py-6">
+
+    <div class="container">
+
+        <div class="row g-5">
+
+            <!-- Order Items -->
+
+            <div class="col-lg-7">
+
+                <div class="bg-light rounded p-5">
+
+                    <div class="d-flex justify-content-between mb-4">
+
+                        <h3>
+                            Order #{{ order.id }}
+                        </h3>
+
+                        <span class="badge bg-warning text-dark">
+                            {{ order.get_status_display }}
+                        </span>
+
+                    </div>
+
+
+                    {% for item in order.items.all %}
+
+                    <div class="d-flex align-items-center mb-4">
+
+                        {% if item.product.image %}
+
+                        <img src="{{ item.product.image.url }}"
+                             class="rounded me-3"
+                             style="width: 80px;
+                                    height: 80px;
+                                    object-fit: cover;"
+                             alt="{{ item.product.name }}">
+
+                        {% else %}
+
+                        <img src="{% static 'img/product-1.jpg' %}"
+                             class="rounded me-3"
+                             style="width: 80px;
+                                    height: 80px;
+                                    object-fit: cover;"
+                             alt="{{ item.product.name }}">
+
+                        {% endif %}
+
+
+                        <div class="flex-grow-1">
+
+                            <h6 class="mb-1">
+                                {{ item.product.name }}
+                            </h6>
+
+                            <p class="mb-0 text-muted">
+
+                                ₹{{ item.price }}
+
+                                ×
+
+                                {{ item.quantity }}
+
+                            </p>
+
+                        </div>
+
+
+                        <strong>
+                            ₹{{ item.total_price }}
+                        </strong>
+
+                    </div>
+
+                    {% endfor %}
+
+
+                    <hr>
+
+
+                    <div class="d-flex justify-content-between">
+
+                        <h5>
+                            Total
+                        </h5>
+
+                        <h5 class="text-primary">
+                            ₹{{ order.total_amount }}
+                        </h5>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Delivery Details -->
+
+            <div class="col-lg-5">
+
+                <div class="bg-light rounded p-5">
+
+                    <h3 class="mb-4">
+                        Delivery Details
+                    </h3>
+
+
+                    <p>
+                        <strong>Name:</strong>
+                        {{ order.full_name }}
+                    </p>
+
+                    <p>
+                        <strong>Phone:</strong>
+                        {{ order.phone }}
+                    </p>
+
+                    <p>
+                        <strong>Address:</strong><br>
+                        {{ order.address }}
+                    </p>
+
+                    <p>
+                        <strong>City:</strong>
+                        {{ order.city }}
+                    </p>
+
+                    <p>
+                        <strong>State:</strong>
+                        {{ order.state }}
+                    </p>
+
+                    <p>
+                        <strong>Pincode:</strong>
+                        {{ order.pincode }}
+                    </p>
+
+                    <p>
+                        <strong>Payment:</strong>
+                        {{ order.get_payment_method_display }}
+                    </p>
+
+                    <p>
+                        <strong>Order Date:</strong>
+                        {{ order.created_at|date:"d M Y, h:i A" }}
+                    </p>
+
+
+                    <a href="{% url 'my_orders' %}"
+                       class="btn btn-outline-primary rounded-pill px-4 mt-3">
+
+                        <i class="fa fa-arrow-left me-2"></i>
+
+                        Back to Orders
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock content %}

@@ -108,6 +108,12 @@
                                 <i class="fa fa-eye text-primary"></i>
 
                             </a>
+                            {% if user.is_authenticated %}
+                            <a href="{% url 'add_to_wishlist' product.id %}"
+                                class="btn btn-lg-square btn-outline-light rounded-circle">
+                                    <i class="fa fa-heart text-primary"></i>
+                            </a>
+                            {% endif %}
 
                         </div>
 

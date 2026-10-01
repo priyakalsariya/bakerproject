@@ -1,0 +1,67 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div class="container-xxl py-6">
+
+    <div class="container">
+
+        <div class="text-center py-5">
+
+            <div class="mb-4">
+
+                <i class="fa fa-check-circle"
+                   style="font-size: 90px;
+                          color: #28a745;"></i>
+
+            </div>
+
+            <h1 class="mb-3">
+                Order Placed Successfully!
+            </h1>
+
+            <p class="text-muted mb-2">
+                Thank you for shopping with Happy Bakery.
+            </p>
+
+            <p class="mb-4">
+
+                Your Order ID is:
+
+                <strong>
+                    #{{ order.id }}
+                </strong>
+
+            </p>
+
+            <h4 class="text-primary mb-4">
+                Total: ₹{{ order.total_amount }}
+            </h4>
+
+
+            <a href="{% url 'my_orders' %}"
+               class="btn btn-primary rounded-pill py-3 px-5">
+
+                <i class="fa fa-list me-2"></i>
+
+                View My Orders
+
+            </a>
+
+
+            <a href="{% url 'product' %}"
+               class="btn btn-outline-primary rounded-pill py-3 px-5 ms-2">
+
+                <i class="fa fa-shopping-bag me-2"></i>
+
+                Continue Shopping
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock content %}

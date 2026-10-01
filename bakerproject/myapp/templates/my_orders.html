@@ -1,0 +1,147 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<!-- Page Header -->
+
+<div class="container-fluid page-header py-6 wow fadeIn">
+
+    <div class="container text-center pt-5 pb-3">
+
+        <h1 class="display-4 text-white">
+            My Orders
+        </h1>
+
+        <nav aria-label="breadcrumb">
+
+            <ol class="breadcrumb justify-content-center mb-0">
+
+                <li class="breadcrumb-item">
+                    <a class="text-white"
+                       href="{% url 'index' %}">
+                        Home
+                    </a>
+                </li>
+
+                <li class="breadcrumb-item text-primary active">
+                    My Orders
+                </li>
+
+            </ol>
+
+        </nav>
+
+    </div>
+
+</div>
+
+
+<!-- Orders -->
+
+<div class="container-xxl py-6">
+
+    <div class="container">
+
+        {% if orders %}
+
+        <div class="row g-4">
+
+            {% for order in orders %}
+
+            <div class="col-lg-6">
+
+                <div class="bg-light rounded p-4">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+
+                        <h5 class="mb-0">
+                            Order #{{ order.id }}
+                        </h5>
+
+                        <span class="badge bg-warning text-dark">
+                            {{ order.get_status_display }}
+                        </span>
+
+                    </div>
+
+
+                    <p class="mb-2">
+
+                        <strong>Date:</strong>
+
+                        {{ order.created_at|date:"d M Y, h:i A" }}
+
+                    </p>
+
+
+                    <p class="mb-2">
+
+                        <strong>Payment:</strong>
+
+                        {{ order.get_payment_method_display }}
+
+                    </p>
+
+
+                    <p class="mb-3">
+
+                        <strong>Total:</strong>
+
+                        <span class="text-primary">
+                            ₹{{ order.total_amount }}
+                        </span>
+
+                    </p>
+
+
+                    <a href="{% url 'order_detail' order.id %}"
+                       class="btn btn-outline-primary rounded-pill px-4">
+
+                        <i class="fa fa-eye me-2"></i>
+
+                        View Order
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="text-center py-5">
+
+            <i class="fa fa-shopping-bag mb-4"
+               style="font-size: 80px;
+                      color: #EAA636;"></i>
+
+            <h2>
+                No Orders Yet
+            </h2>
+
+            <p class="text-muted mb-4">
+                You haven't placed any orders yet.
+            </p>
+
+            <a href="{% url 'product' %}"
+               class="btn btn-primary rounded-pill py-3 px-5">
+
+                <i class="fa fa-shopping-bag me-2"></i>
+
+                Start Shopping
+
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock content %}

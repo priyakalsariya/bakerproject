@@ -1,0 +1,348 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Page Header -->
+
+<div class="container-fluid page-header py-6 wow fadeIn">
+
+    <div class="container text-center pt-5 pb-3">
+
+        <h1 class="display-4 text-white">
+            Checkout
+        </h1>
+
+        <nav aria-label="breadcrumb">
+
+            <ol class="breadcrumb justify-content-center mb-0">
+
+                <li class="breadcrumb-item">
+                    <a class="text-white"
+                       href="{% url 'index' %}">
+                        Home
+                    </a>
+                </li>
+
+                <li class="breadcrumb-item">
+                    <a class="text-white"
+                       href="{% url 'cart' %}">
+                        Cart
+                    </a>
+                </li>
+
+                <li class="breadcrumb-item text-primary active">
+                    Checkout
+                </li>
+
+            </ol>
+
+        </nav>
+
+    </div>
+
+</div>
+
+
+<!-- Checkout -->
+
+<div class="container-xxl py-6">
+
+    <div class="container">
+
+        {% if error %}
+
+        <div class="alert alert-danger">
+            {{ error }}
+        </div>
+
+        {% endif %}
+
+
+        <div class="row g-5">
+
+            <!-- Delivery Information -->
+
+            <div class="col-lg-7">
+
+                <div class="bg-light rounded p-5">
+
+                    <h3 class="mb-4">
+                        Delivery Information
+                    </h3>
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        <!-- Full Name -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Full Name
+                            </label>
+
+                            <input type="text"
+                                   name="full_name"
+                                   class="form-control"
+                                   placeholder="Enter your full name"
+                                   required>
+
+                        </div>
+
+
+                        <!-- Phone -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Phone Number
+                            </label>
+
+                            <input type="tel"
+                                   name="phone"
+                                   class="form-control"
+                                   placeholder="Enter your phone number"
+                                   maxlength="15"
+                                   required>
+
+                        </div>
+
+
+                        <!-- Address -->
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Address
+                            </label>
+
+                            <textarea name="address"
+                                      class="form-control"
+                                      rows="3"
+                                      placeholder="House / Street / Area"
+                                      required></textarea>
+
+                        </div>
+
+
+                        <div class="row">
+
+                            <!-- City -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    City
+                                </label>
+
+                                <input type="text"
+                                       name="city"
+                                       class="form-control"
+                                       placeholder="City"
+                                       required>
+
+                            </div>
+
+
+                            <!-- State -->
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+                                    State
+                                </label>
+
+                                <input type="text"
+                                       name="state"
+                                       class="form-control"
+                                       placeholder="State"
+                                       required>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Pincode -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label">
+                                Pincode
+                            </label>
+
+                            <input type="text"
+                                   name="pincode"
+                                   class="form-control"
+                                   placeholder="Pincode"
+                                   maxlength="10"
+                                   required>
+
+                        </div>
+
+
+                        <!-- Payment -->
+
+                        <h4 class="mb-3">
+                            Payment Method
+                        </h4>
+
+                        <div class="mb-4">
+
+                            <div class="form-check mb-2">
+
+                                <input class="form-check-input"
+                                       type="radio"
+                                       name="payment_method"
+                                       value="cod"
+                                       id="cod"
+                                       checked>
+
+                                <label class="form-check-label"
+                                       for="cod">
+
+                                    <i class="fa fa-money-bill-wave me-2"></i>
+
+                                    Cash on Delivery
+
+                                </label>
+
+                            </div>
+
+
+                            <div class="form-check">
+
+                                <input class="form-check-input"
+                                       type="radio"
+                                       name="payment_method"
+                                       value="online"
+                                       id="online">
+
+                                <label class="form-check-label"
+                                       for="online">
+
+                                    <i class="fa fa-credit-card me-2"></i>
+
+                                    Online Payment
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Place Order -->
+
+                        <button type="submit"
+                                class="btn btn-primary rounded-pill py-3 px-5">
+
+                            <i class="fa fa-shopping-bag me-2"></i>
+
+                            Place Order
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+            <!-- Order Summary -->
+
+            <div class="col-lg-5">
+
+                <div class="bg-light rounded p-5">
+
+                    <h3 class="mb-4">
+                        Your Order
+                    </h3>
+
+
+                    {% for item in cart_items %}
+
+                    <div class="d-flex align-items-center mb-4">
+
+                        <!-- Product Image -->
+
+                        {% if item.products.image %}
+
+                        <img src="{{ item.products.image.url }}"
+                             alt="{{ item.products.name }}"
+                             style="width: 70px;
+                                    height: 70px;
+                                    object-fit: cover;"
+                             class="rounded me-3">
+
+                        {% else %}
+
+                        <img src="{% static 'img/product-1.jpg' %}"
+                             alt="{{ item.products.name }}"
+                             style="width: 70px;
+                                    height: 70px;
+                                    object-fit: cover;"
+                             class="rounded me-3">
+
+                        {% endif %}
+
+
+                        <!-- Product -->
+
+                        <div class="flex-grow-1">
+
+                            <h6 class="mb-1">
+                                {{ item.products.name }}
+                            </h6>
+
+                            <small class="text-muted">
+                                ₹{{ item.products.price }}
+                                ×
+                                {{ item.quentity }}
+                            </small>
+
+                        </div>
+
+
+                        <!-- Item Total -->
+
+                        <strong>
+                            ₹{{ item.total_price }}
+                        </strong>
+
+                    </div>
+
+                    {% endfor %}
+
+
+                    <hr>
+
+
+                    <!-- Total -->
+
+                    <div class="d-flex justify-content-between">
+
+                        <h5>
+                            Total
+                        </h5>
+
+                        <h5 class="text-primary">
+                            ₹{{ total }}
+                        </h5>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock content %}
