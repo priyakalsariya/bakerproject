@@ -108,7 +108,7 @@
 
                                 ×
 
-                                {{ item.quantity }}
+                                {{ item.quentity }}
 
                             </p>
 
@@ -194,6 +194,17 @@
                         <strong>Order Date:</strong>
                         {{ order.created_at|date:"d M Y, h:i A" }}
                     </p>
+                    <div class="mb-4">
+
+                        <a href="{% url 'download_invoice' order.id %}"
+                        class="btn btn-primary rounded-pill py-3 px-5">
+
+                            <i class="fa fa-download me-2"></i>
+                            Download Invoice
+
+                        </a>
+
+                    </div>
 
 
                     <a href="{% url 'my_orders' %}"

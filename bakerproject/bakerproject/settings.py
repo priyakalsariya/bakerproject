@@ -123,10 +123,22 @@ STATIC_ROOT=[BASE_DIR/'static']
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
 MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
+    "default": {
+        "BACKEND": "django.core.mail.backends.smtp.EmailBackend",
+        "OPTIONS": {
+            "host": "smtp.gmail.com",
+            "port": 587,
+            "use_tls": True,
+            "username": "priyakalsariya0506@gmail.com",
+            "password": "xldvxdcfaxipmqkj",
+        },
     },
 }
+ 
+DEFAULT_FROM_EMAIL = "priyakalsariya0506@gmail.com"
 
 MEDIA_URL='/media/'
 MEDIA_ROOT=BASE_DIR/'media'
+
+LOGIN_URL = 'login'
+

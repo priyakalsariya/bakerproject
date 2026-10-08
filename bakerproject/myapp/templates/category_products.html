@@ -71,13 +71,22 @@
                             {{ product.description }}
                         </p>
 
-                        <a href="{% url 'add_to_cart' product.id %}"
-                            class="btn btn-primary rounded-pill">
+                        {% if user.is_authenticated and product.id in cart_product_ids %}
 
+                            <button class="btn btn-success" disabled>
+                                <i class="fa fa-check me-2"></i>
+                                Added to Cart
+                            </button>
+
+                        {% else %}
+
+                            <a href="{% url 'add_to_cart' product.id %}"
+                            class="btn btn-primary">
                                 <i class="fa fa-shopping-cart me-2"></i>
-                                    Add to Cart
-                        </a>
+                                Add to Cart
+                            </a>
 
+                        {% endif %}
                     </div>
 
 

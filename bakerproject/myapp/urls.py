@@ -37,6 +37,9 @@ urlpatterns = [
     path('order/success/<int:order_id>/',views.order_success,name='order_success'),
     path('my-orders/',views.my_orders,name='my_orders'),
     path('order/<int:order_id>/',views.order_detail,name='order_detail'),
+    path('order/<int:order_id>/invoice/',views.download_invoice,name='download_invoice'),
+
+    path("test-email/", views.test_email),
 
     
 ]

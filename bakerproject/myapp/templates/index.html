@@ -12,7 +12,7 @@
                             <div class="col-lg-8">
                                 <p class="text-primary text-uppercase fw-bold mb-2">// The Best Bakery</p>
                                 <h1 class="display-1 text-light mb-4 animated slideInDown">We Bake With Passion</h1>
-                                <p class="text-light fs-5 mb-4 pb-3">Vero elitr justo clita lorem. Ipsum dolor sed stet sit diam rebum ipsum.</p>
+                                <p class="text-light fs-5 mb-4 pb-3">Step into Happy Bakery and discover a world of delicious flavors, freshly baked treats, and sweet moments made to bring a smile to your face.</p>
                                 <a href="{% url 'read_more' %}" class="btn btn-primary rounded-pill py-3 px-5">Read More</a>
                             </div>
                         </div>
@@ -95,8 +95,9 @@
                     <div class="h-100">
                         <p class="text-primary text-uppercase mb-2">// About Us</p>
                         <h1 class="display-6 mb-4">We Bake Every Item From The Core Of Our Hearts</h1>
-                        <p>Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet</p>
-                        <p>Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet</p>
+                        <p>Welcome to Happy Bakery, where every bite is made to bring a little more happiness to your day. At Happy Bakery, we believe that great moments are even better when shared with delicious food. From freshly baked cakes and pastries to soft breads, cookies, and delightful desserts, we prepare every product with quality ingredients, care, and a passion for baking.
+
+                        <p>Whether you're celebrating a birthday, anniversary, wedding, festival, or simply enjoying a sweet treat with your loved ones, we are here to make your moments a little sweeter.</p>
                         <div class="row g-2 mb-4">
                             <div class="col-sm-6">
                                 <i class="fa fa-check text-primary me-2"></i>Quality Products
@@ -133,7 +134,7 @@
                             <i class="fa fa-phone-alt fa-4x flex-shrink-0"></i>
                             <div class="ms-4">
                                 <p class="fs-5 fw-bold mb-0">Call Us</p>
-                                <p class="fs-1 fw-bold mb-0">+012 345 6789</p>
+                                <p class="fs-1 fw-bold mb-0">+91 96626 56019</p>
                             </div>
                         </div>
                     </div>
@@ -147,14 +148,14 @@
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="product-item d-flex flex-column bg-white rounded overflow-hidden h-100">
                         <div class="text-center p-4">
-                            <div class="d-inline-block border border-primary rounded-pill px-3 mb-3">$11 - $99</div>
-                            <h3 class="mb-3">Cake</h3>
-                            <span>Tempor erat elitr rebum at clita dolor diam ipsum sit diam amet diam et eos</span>
+                            <div class="d-inline-block border border-primary rounded-pill px-3 mb-3">₹300-₹2000</div>
+                            <h3 class="mb-3">Cakes</h3>
+                            <span>Rich and moist chocolate cake layered with smooth chocolate cream, perfect for chocolate lovers.</span>
                         </div>
                         <div class="position-relative mt-auto">
                             <img class="img-fluid" src="{% static 'img/product-1.jpg' %}" alt="">
                             <div class="product-overlay">
-                                <a class="btn btn-lg-square btn-outline-light rounded-circle" href=""><i class="fa fa-eye text-primary"></i></a>
+                                <a class="btn btn-lg-square btn-outline-light rounded-circle" href="{% url 'category_products' 1 %}"><i class="fa fa-eye text-primary"></i></a>
                             </div>
                         </div>
                     </div>
@@ -162,14 +163,14 @@
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                     <div class="product-item d-flex flex-column bg-white rounded overflow-hidden h-100">
                         <div class="text-center p-4">
-                            <div class="d-inline-block border border-primary rounded-pill pt-1 px-3 mb-3">$11 - $99</div>
-                            <h3 class="mb-3">Bread</h3>
-                            <span>Tempor erat elitr rebum at clita dolor diam ipsum sit diam amet diam et eos</span>
+                            <div class="d-inline-block border border-primary rounded-pill pt-1 px-3 mb-3">₹50 - ₹200</div>
+                            <h3 class="mb-3">Breads</h3>
+                            <span>Healthy bread made with a blend of grains and seeds, offering a rich texture and flavor.</span>
                         </div>
                         <div class="position-relative mt-auto">
                             <img class="img-fluid" src="{% static 'img/product-2.jpg' %}" alt="">
                             <div class="product-overlay">
-                                <a class="btn btn-lg-square btn-outline-light rounded-circle" href=""><i class="fa fa-eye text-primary"></i></a>
+                                <a class="btn btn-lg-square btn-outline-light rounded-circle" href="{% url 'category_products' 2 %}"><i class="fa fa-eye text-primary"></i></a>
                             </div>
                         </div>
                     </div>
@@ -177,18 +178,19 @@
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
                     <div class="product-item d-flex flex-column bg-white rounded overflow-hidden h-100">
                         <div class="text-center p-4">
-                            <div class="d-inline-block border border-primary rounded-pill pt-1 px-3 mb-3">$11 - $99</div>
-                            <h4 class="mb-3">Cookies</h4>
-                            <span>Tempor erat elitr rebum at clita dolor diam ipsum sit diam amet diam et eos</span>
+                            <div class="d-inline-block border border-primary rounded-pill pt-1 px-3 mb-3">₹30 - ₹500</div>
+                            <h4 class="mb-3">Snacks</h4>
+                            <span>Fresh bread filled with crunchy vegetables, cheese, and delicious sandwich spread.</span>
                         </div>
                         <div class="position-relative mt-auto">
-                            <img class="img-fluid" src="{% static 'img/product-3.jpg' %}" alt="">
+                            <img class="img-fluid" src="{% static 'img/product-3.jpg' %}" alt="{% url 'category_products' 3 %}">
                             <div class="product-overlay">
                                 <a class="btn btn-lg-square btn-outline-light rounded-circle" href=""><i class="fa fa-eye text-primary"></i></a>
                             </div>
                         </div>
                     </div>
                 </div>
+    
             </div>
         </div>
     </div>
@@ -202,8 +204,7 @@
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
                     <p class="text-primary text-uppercase mb-2">// Our Services</p>
                     <h1 class="display-6 mb-4">What Do We Offer For You?</h1>
-                    <p class="mb-5">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet</p>
-                    <div class="row gy-5 gx-4">
+                    <p class="mb-5">At Happy Bakery, we offer freshly baked cakes, breads, pastries, and delicious snacks made with quality ingredients and lots of love. From everyday treats to special celebrations, we have something sweet and delicious for everyone.</p>                    <div class="row gy-5 gx-4">
                         <div class="col-sm-6 wow fadeIn" data-wow-delay="0.1s">
                             <div class="d-flex align-items-center mb-3">
                                 <div class="flex-shrink-0 btn-square bg-primary rounded-circle me-3">
@@ -211,8 +212,8 @@
                                 </div>
                                 <h5 class="mb-0">Quality Products</h5>
                             </div>
-                            <span>Magna sea eos sit dolor, ipsum amet ipsum lorem diam eos</span>
-                        </div>
+                                <span>Fresh ingredients, careful preparation, and delicious taste in every bite.</span>                        
+                            </div>
                         <div class="col-sm-6 wow fadeIn" data-wow-delay="0.2s">
                             <div class="d-flex align-items-center mb-3">
                                 <div class="flex-shrink-0 btn-square bg-primary rounded-circle me-3">
@@ -220,7 +221,7 @@
                                 </div>
                                 <h5 class="mb-0">Custom Products</h5>
                             </div>
-                            <span>Magna sea eos sit dolor, ipsum amet ipsum lorem diam eos</span>
+                            <span>Personalized cakes and treats made specially for your celebrations.</span>
                         </div>
                         <div class="col-sm-6 wow fadeIn" data-wow-delay="0.3s">
                             <div class="d-flex align-items-center mb-3">
@@ -229,7 +230,7 @@
                                 </div>
                                 <h5 class="mb-0">Online Order</h5>
                             </div>
-                            <span>Magna sea eos sit dolor, ipsum amet ipsum lorem diam eos</span>
+                            <span>Order your favorite bakery treats online with ease.</span>
                         </div>
                         <div class="col-sm-6 wow fadeIn" data-wow-delay="0.4s">
                             <div class="d-flex align-items-center mb-3">
@@ -238,7 +239,7 @@
                                 </div>
                                 <h5 class="mb-0">Home Delivery</h5>
                             </div>
-                            <span>Magna sea eos sit dolor, ipsum amet ipsum lorem diam eos</span>
+                            <span>Enjoy fresh and delicious bakery treats delivered safely and conveniently to your doorstep.</span>
                         </div>
                     </div>
                 </div>
@@ -271,8 +272,8 @@
                         <img class="img-fluid" src="{% static 'img/team-1.jpg' %}" alt="">
                         <div class="team-text">
                             <div class="team-title">
-                                <h5>Full Name</h5>
-                                <span>Designation</span>
+                                <h5>Rahul Patel </h5>
+                                <span>Head Baker & Founder</span>
                             </div>
                             <div class="team-social">
                                 <a class="btn btn-square btn-light rounded-circle" href=""><i class="fab fa-facebook-f"></i></a>
@@ -287,8 +288,8 @@
                         <img class="img-fluid" src="{% static 'img/team-2.jpg' %}" alt="">
                         <div class="team-text">
                             <div class="team-title">
-                                <h5>Full Name</h5>
-                                <span>Designation</span>
+                                <h5>Yash Mehta</h5>
+                                <span>Pastry Chef</span>
                             </div>
                             <div class="team-social">
                                 <a class="btn btn-square btn-light rounded-circle" href=""><i class="fab fa-facebook-f"></i></a>
@@ -303,8 +304,8 @@
                         <img class="img-fluid" src="{% static 'img/team-3.jpg' %}" alt="">
                         <div class="team-text">
                             <div class="team-title">
-                                <h5>Full Name</h5>
-                                <span>Designation</span>
+                                <h5>Dev Shah</h5>
+                                <span>Cake Artist & Decorator</span>
                             </div>
                             <div class="team-social">
                                 <a class="btn btn-square btn-light rounded-circle" href=""><i class="fab fa-facebook-f"></i></a>
@@ -319,8 +320,8 @@
                         <img class="img-fluid" src="{% static 'img/team-4.jpg' %}" alt="">
                         <div class="team-text">
                             <div class="team-title">
-                                <h5>Full Name</h5>
-                                <span>Designation</span>
+                                <h5>Harsh Desai</h5>
+                                <span>Bakery Manager</span>
                             </div>
                             <div class="team-social">
                                 <a class="btn btn-square btn-light rounded-circle" href=""><i class="fab fa-facebook-f"></i></a>
@@ -348,41 +349,41 @@
                     <div class="d-flex align-items-center mb-4">
                         <img class="flex-shrink-0 rounded-circle border p-1" src="{% static 'img/testimonial-1.jpg' %}" alt="">
                         <div class="ms-4">
-                            <h5 class="mb-1">Client Name</h5>
-                            <span>Profession</span>
+                            <h5 class="mb-1">Meera Joshi</h5>
+                            <span>Teacher</span>
                         </div>
                     </div>
-                    <p class="mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
+                    <p class="mb-0">The chocolate cake was fresh, soft, and absolutely delicious. Everyone loved it!</p>
                 </div>
                 <div class="testimonial-item bg-white rounded p-4">
                     <div class="d-flex align-items-center mb-4">
                         <img class="flex-shrink-0 rounded-circle border p-1" src="{% static 'img/testimonial-2.jpg' %}" alt="">
                         <div class="ms-4">
-                            <h5 class="mb-1">Client Name</h5>
-                            <span>Profession</span>
+                            <h5 class="mb-1">Aarav Patel</h5>
+                            <span>Software Developer</span>
                         </div>
                     </div>
-                    <p class="mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
+                    <p class="mb-0">Amazing pastries and beautiful presentation. Everything tasted freshly baked.</p>
                 </div>
                 <div class="testimonial-item bg-white rounded p-4">
                     <div class="d-flex align-items-center mb-4">
                         <img class="flex-shrink-0 rounded-circle border p-1" src="{% static 'img/testimonial-3.jpg' %}" alt="">
                         <div class="ms-4">
-                            <h5 class="mb-1">Client Name</h5>
-                            <span>Profession</span>
+                            <h5 class="mb-1">Kunal Desai</h5>
+                            <span>Business Owner</span>
                         </div>
                     </div>
-                    <p class="mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
+                    <p class="mb-0">I ordered a birthday cake and it was perfect. Great taste, quality, and service!</p>
                 </div>
                 <div class="testimonial-item bg-white rounded p-4">
                     <div class="d-flex align-items-center mb-4">
                         <img class="flex-shrink-0 rounded-circle border p-1" src="{% static 'img/testimonial-4.jpg' %}" alt="">
                         <div class="ms-4">
-                            <h5 class="mb-1">Client Name</h5>
-                            <span>Profession</span>
+                            <h5 class="mb-1">Neha Mehta</h5>
+                            <span>Fashion Designer</span>
                         </div>
                     </div>
-                    <p class="mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
+                    <p class="mb-0">Loved the cupcakes! They looked beautiful and tasted even better.</p>
                 </div>
             </div>
             <div class="bg-primary text-light rounded-top p-5 my-6 mb-0 wow fadeInUp" data-wow-delay="0.1s">

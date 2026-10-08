@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>New Order</title>
+</head>
+
+<body>
+
+    <h2>New Order Received - Happy Bakery</h2>
+
+    <p>Hello Priya,</p>
+
+    <p>A new order has been placed on your Happy Bakery website.</p>
+
+    <hr>
+
+    <h3>Order Details</h3>
+
+    <p>
+        <strong>Order ID:</strong>
+        #{{ order.id }}
+    </p>
+
+    <p>
+        <strong>Customer:</strong>
+        {{ order.full_name }}
+    </p>
+
+    <p>
+        <strong>Phone:</strong>
+        {{ order.phone }}
+    </p>
+
+    <p>
+        <strong>Address:</strong>
+        {{ order.address }},
+        {{ order.city }},
+        {{ order.state }} -
+        {{ order.pincode }}
+    </p>
+
+    <p>
+        <strong>Payment Method:</strong>
+        {{ order.get_payment_method_display }}
+    </p>
+
+    <hr>
+
+    <h3>Products</h3>
+
+    <table border="1" cellpadding="8" cellspacing="0">
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+        </tr>
+
+        {% for item in order.items.all %}
+        <tr>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.quentity }}</td>
+            <td>₹{{ item.price }}</td>
+            <td>₹{{ item.total_price }}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    <h3>
+        Total Amount: ₹{{ order.total_amount }}
+    </h3>
+
+    <p>
+        <strong>Order Status:</strong>
+        {{ order.get_status_display }}
+    </p>
+
+    <hr>
+
+    <p>Thank you,</p>
+    <p><strong>Happy Bakery</strong></p>
+
+</body>
+</html>

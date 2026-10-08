@@ -5,6 +5,31 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .models import *
 from django.http import JsonResponse
+from django.http import HttpResponse
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from reportlab.lib import colors
+from reportlab.lib.units import mm
+from django.http import HttpResponse
+from .utils import send_email
+from django.conf import settings
+import json
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+ 
+ 
+def test_email(request):
+ 
+    send_email(
+        subject="Welcome to My Store",
+        to_email="priyakalsariya.edu@gmail.com",
+        template_name="welcome_email.html",
+        context={
+            "name": "Priya"
+        }
+    )
+ 
+    return HttpResponse("Email sent successfully")
 
 
 # Create your views here.
@@ -86,7 +111,8 @@ def logout_user(request):
 
 @login_required
 def index(request):
-    return render(request,'index.html')
+    categories = Category.objects.all()
+    return render(request,'index.html',{'categories': categories})
 
 def about(request):
     return render(request,'about.html')
@@ -119,7 +145,11 @@ def product(request):
     else:
         products=Product.objects.none()
 
-    return render(request,'product.html',{'categories':categories,'search_query':search_query,'products':products})
+
+    return render(request,'product.html',{'categories':categories,
+                                          'search_query':search_query,
+                                          'products':products
+                                          })
 
 
 def category_products(request,category_id):
@@ -127,7 +157,23 @@ def category_products(request,category_id):
 
     products=Product.objects.filter(category=category)
 
-    return render(request,'category_products.html',{'category':category,'products':products})
+    cart_product_ids = []
+
+    if request.user.is_authenticated:
+
+        cart = Cart.objects.filter(
+            user=request.user
+        ).first()
+
+        if cart:
+            cart_product_ids = list(
+                cart.items.values_list(
+                    'products_id',
+                    flat=True
+                )
+            )
+
+    return render(request,'category_products.html',{'category':category,'products':products,'cart_product_ids': cart_product_ids})
 
 def product_detail(request, product_id):
 
@@ -147,6 +193,7 @@ def product_detail(request, product_id):
         {
             'product': product,
             'is_wishlisted':is_wishlisted
+            
         }
     )
 
@@ -409,6 +456,15 @@ def checkout(request):
                 quentity=item.quentity,
                 price=item.products.price
             )
+
+        send_email(
+            subject=f"New Order #{order.id} - Happy Bakery",
+            to_email="priyakalsariya.edu@gmail.com",
+            template_name="order_confirmation_email.html",
+            context={
+                "order": order
+            }
+        )
         cart_items.delete()
 
         return redirect('order_success',order_id=order.id)
@@ -441,3 +497,157 @@ def order_detail(request, order_id):
     return render(request,'order_detail.html',{'order': order})
 
 
+@login_required
+def download_invoice(request, order_id):
+
+    order = get_object_or_404(
+        Order.objects.prefetch_related('items__product'),
+        id=order_id,
+        user=request.user
+    )
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = (
+        f'attachment; filename="Happy_Bakery_Invoice_{order.id}.pdf"'
+    )
+
+    pdf = canvas.Canvas(response, pagesize=A4)
+
+    width, height = A4
+
+    # -----------------------------
+    # Header
+    # -----------------------------
+
+    pdf.setFont("Helvetica-Bold", 24)
+    pdf.drawString(30 * mm, 270 * mm, "Happy Bakery")
+
+    pdf.setFont("Helvetica", 10)
+    pdf.drawString(30 * mm, 263 * mm, "Freshly Baked With Love")
+
+    pdf.line(30 * mm, 258 * mm, 180 * mm, 258 * mm)
+
+    # -----------------------------
+    # Invoice information
+    # -----------------------------
+
+    pdf.setFont("Helvetica-Bold", 16)
+    pdf.drawString(30 * mm, 245 * mm, "INVOICE")
+
+    pdf.setFont("Helvetica", 10)
+
+    pdf.drawString(130 * mm,245 * mm,f"Order ID: #{order.id}")
+
+    pdf.drawString(130 * mm,238 * mm,f"Date: {order.created_at.strftime('%d-%m-%Y')}")
+
+    pdf.drawString(130 * mm,231 * mm,f"Payment: {order.get_payment_method_display()}")
+
+    # -----------------------------
+    # Customer Details
+    # -----------------------------
+
+    pdf.setFont("Helvetica-Bold", 11)
+    pdf.drawString(30 * mm, 225 * mm, "Customer Details")
+
+    pdf.setFont("Helvetica", 10)
+
+    pdf.drawString(30 * mm,218 * mm,f"Name: {order.full_name}")
+
+    pdf.drawString(30 * mm,211 * mm,f"Phone: {order.phone}")
+
+    pdf.drawString(30 * mm,204 * mm,f"Address: {order.address}")
+
+    pdf.drawString(30 * mm,197 * mm,f"City: {order.city}")
+
+    pdf.drawString(30 * mm,190 * mm,f"State: {order.state}")
+
+    pdf.drawString(30 * mm,183 * mm,f"Pincode: {order.pincode}")
+
+    # -----------------------------
+    # Product Table
+    # -----------------------------
+
+    table_top = 168 * mm
+
+    pdf.setFillColor(colors.lightgrey)
+    pdf.rect(25 * mm,table_top - 8 * mm,160 * mm,10 * mm,fill=1,stroke=0)
+
+    pdf.setFillColor(colors.black)
+
+    pdf.setFont("Helvetica-Bold", 10)
+
+    pdf.drawString(28 * mm, table_top - 5 * mm, "Product")
+    pdf.drawString(105 * mm, table_top - 5 * mm, "Qty")
+    pdf.drawString(125 * mm, table_top - 5 * mm, "Price")
+    pdf.drawString(155 * mm, table_top - 5 * mm, "Total")
+
+    # -----------------------------
+    # Product Rows
+    # -----------------------------
+
+    y = table_top - 18 * mm
+
+    pdf.setFont("Helvetica", 9)
+
+    for item in order.items.all():
+
+        product_name = item.product.name
+
+        # Prevent very long product names
+        if len(product_name) > 35:
+            product_name = product_name[:32] + "..."
+
+        pdf.drawString(28 * mm,y,product_name)
+
+        pdf.drawString(107 * mm,y,str(item.quentity))
+
+        pdf.drawString(125 * mm,y,f"Rs. {item.price:.2f}")
+
+        pdf.drawString(155 * mm,y,f"Rs. {item.total_price:.2f}")
+
+        y -= 10 * mm
+
+    # -----------------------------
+    # Total
+    # -----------------------------
+
+    pdf.line(
+        25 * mm,
+        y + 3 * mm,
+        185 * mm,
+        y + 3 * mm
+    )
+
+    y -= 8 * mm
+
+    pdf.setFont("Helvetica-Bold", 13)
+
+    pdf.drawString(120 * mm,y,"Grand Total:")
+
+    pdf.drawString(155 * mm,y,f"Rs. {order.total_amount:.2f}")
+
+    # -----------------------------
+    # Order Status
+    # -----------------------------
+
+    y -= 15 * mm
+
+    pdf.setFont("Helvetica", 10)
+
+    pdf.drawString(30 * mm,y,f"Order Status: {order.get_status_display()}")
+
+    # -----------------------------
+    # Footer
+    # -----------------------------
+
+    pdf.setFont("Helvetica-Bold", 11)
+
+    pdf.drawCentredString(width / 2,35 * mm,"Thank you for shopping with Happy Bakery!")
+
+    pdf.setFont("Helvetica", 9)
+
+    pdf.drawCentredString(width / 2,28 * mm,"We hope you enjoy our freshly baked products.")
+
+    pdf.save()
+
+    return response

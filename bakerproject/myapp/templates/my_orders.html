@@ -94,14 +94,20 @@
                     </p>
 
 
-                    <a href="{% url 'order_detail' order.id %}"
-                       class="btn btn-outline-primary rounded-pill px-4">
+                    <div class="d-flex gap-2">
 
-                        <i class="fa fa-eye me-2"></i>
+                        <a href="{% url 'order_detail' order.id %}"
+                        class="btn btn-primary rounded-pill">
+                            View Details
+                        </a>
 
-                        View Order
+                        <a href="{% url 'download_invoice' order.id %}"
+                        class="btn btn-outline-primary rounded-pill">
+                            <i class="fa fa-download me-2"></i>
+                            Invoice
+                        </a>
 
-                    </a>
+                    </div>
 
                 </div>
 
