@@ -27,59 +27,62 @@
                 <h1 class="display-6 mb-4">More Than 20000+ Customers Trusted Us</h1>
             </div>
             <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.1s">
+
+                {% for feedback in feedbacks %}
+
                 <div class="testimonial-item bg-white rounded p-4">
+
                     <div class="d-flex align-items-center mb-4">
-                        <img class="flex-shrink-0 rounded-circle border p-1" src="{% static 'img/testimonial-1.jpg' %}" alt="">
+
+                        <div class="flex-shrink-0 rounded-circle border p-1
+                                    d-flex align-items-center justify-content-center"
+                            style="width:60px; height:60px;">
+
+                            <i class="fa fa-user text-primary"></i>
+
+                        </div>
+
                         <div class="ms-4">
-                            <h5 class="mb-1">Meera Joshi</h5>
-                            <span>Teacher</span>
+
+                            <h5 class="mb-1">
+                                {{ feedback.user.first_name }}
+                                {{ feedback.user.last_name }}
+                            </h5>
+
+                            <span>
+                                {{ feedback.profession }}
+                            </span>
+
                         </div>
+
                     </div>
-                    <p class="mb-0">The chocolate cake was fresh, soft, and absolutely delicious. Everyone loved it!</p>
+
+                    <!-- Rating -->
+                    <div class="mb-2 text-primary">
+
+                        {% if feedback.rating >= 1 %}★{% endif %}
+                        {% if feedback.rating >= 2 %}★{% endif %}
+                        {% if feedback.rating >= 3 %}★{% endif %}
+                        {% if feedback.rating >= 4 %}★{% endif %}
+                        {% if feedback.rating >= 5 %}★{% endif %}
+
+                    </div>
+
+                    <!-- Feedback -->
+                    <p class="mb-0">
+                        {{ feedback.message }}
+                    </p>
+
                 </div>
-                <div class="testimonial-item bg-white rounded p-4">
-                    <div class="d-flex align-items-center mb-4">
-                        <img class="flex-shrink-0 rounded-circle border p-1" src="{% static 'img/testimonial-2.jpg' %}" alt="">
-                        <div class="ms-4">
-                            <h5 class="mb-1">Aarav Patel</h5>
-                            <span>Software Developer</span>
-                        </div>
-                    </div>
-                    <p class="mb-0">Amazing pastries and beautiful presentation. Everything tasted freshly baked.</p>
+
+                {% empty %}
+
+                <div class="text-center">
+                    <p>No customer reviews yet.</p>
                 </div>
-                <div class="testimonial-item bg-white rounded p-4">
-                    <div class="d-flex align-items-center mb-4">
-                        <img class="flex-shrink-0 rounded-circle border p-1" src="{% static 'img/testimonial-3.jpg' %}" alt="">
-                        <div class="ms-4">
-                            <h5 class="mb-1">Kunal Desai</h5>
-                            <span>Business Owner</span>
-                        </div>
-                    </div>
-                    <p class="mb-0">I ordered a birthday cake and it was perfect. Great taste, quality, and service!</p>
-                </div>
-                <div class="testimonial-item bg-white rounded p-4">
-                    <div class="d-flex align-items-center mb-4">
-                        <img class="flex-shrink-0 rounded-circle border p-1" src="{% static 'img/testimonial-4.jpg' %}" alt="">
-                        <div class="ms-4">
-                            <h5 class="mb-1">Neha Mehta</h5>
-                            <span>Fashion Designer</span>
-                        </div>
-                    </div>
-                    <p class="mb-0">Loved the cupcakes! They looked beautiful and tasted even better.</p>
-                </div>
-            </div>
-            <div class="bg-primary text-light rounded-top p-5 my-6 mb-0 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="row align-items-center">
-                    <div class="col-md-6">
-                        <h1 class="display-4 text-light mb-0">Subscribe Our Newsletter</h1>
-                    </div>
-                    <div class="col-md-6 text-md-end">
-                        <div class="position-relative">
-                            <input class="form-control bg-transparent border-light w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                            <button type="button" class="btn btn-dark py-2 px-3 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                        </div>
-                    </div>
-                </div>
+
+                {% endfor %}
+
             </div>
         </div>
     </div>

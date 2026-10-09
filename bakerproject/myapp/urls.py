@@ -40,6 +40,12 @@ urlpatterns = [
     path('order/<int:order_id>/invoice/',views.download_invoice,name='download_invoice'),
 
     path("test-email/", views.test_email),
+    path('submit-feedback/',views.submit_feedback,name='submit_feedback'),
+
+    path('payment/<int:order_id>/',views.pay_order,name='pay_order'),
+    path("callback/", views.payment_callback, name="payment_callback"),
+
+
 
     
 ]

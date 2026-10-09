@@ -1,0 +1,26 @@
+{% extends 'main.html' %}
+
+
+{% block content %}
+<div class="container-xxl py-6 text-center">
+
+    {% if success %}
+        <h2 class="text-success">Payment Successful</h2>
+        <p>Payment ID: {{ payment_id }}</p>
+    {% else %}
+        <h2 class="text-danger">Payment Not Confirmed</h2>
+        <p>{{ message|default:"We could not verify your payment." }}</p>
+
+        {% if order_id %}
+            <a class="btn btn-primary"
+               href="{% url 'pay_order' order_id=order_id %}">
+                Try Payment Again
+            </a>
+        {% endif %}
+    {% endif %}
+
+    <a href="{% url 'my_orders' %}" class="btn btn-secondary">
+        My Orders
+    </a>
+</div>
+{% endblock content %}

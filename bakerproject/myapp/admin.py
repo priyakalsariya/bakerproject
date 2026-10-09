@@ -20,6 +20,30 @@ class OrderAdmin(admin.ModelAdmin):
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):
     list_display=('order','product','quentity','price')
+
+@admin.register(Feedback)
+class FeedbackAdmin(admin.ModelAdmin):
+
+    list_display = (
+        'user',
+        'rating',
+        'message',
+        'is_approved',
+        'created_at',
+    )
+
+    list_filter = (
+        'rating',
+        'is_approved',
+        'created_at',
+    )
+
+    search_fields = (
+        'user__username',
+        'user__first_name',
+        'user__last_name',
+        'message',
+    )
     
 
     

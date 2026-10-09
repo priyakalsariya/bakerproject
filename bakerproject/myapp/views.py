@@ -14,8 +14,101 @@ from django.http import HttpResponse
 from .utils import send_email
 from django.conf import settings
 import json
-from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+from . import services
+
+
+@login_required
+def pay_order(request, order_id):
+    order = get_object_or_404(
+        Order,
+        id=order_id,
+        user=request.user,
+        payment_method='online',
+        payment_status='pending'
+    )
+
+    return render(request, 'pay.html', {
+        'key_id': settings.RAZORPAY_KEY_ID,
+        'order': order,
+        'amount_paise': int(order.total_amount * 100),
+        'callback_url': request.build_absolute_uri(
+            reverse('payment_callback')
+        ),
+    })
+ 
+ 
+
+@csrf_exempt
+def payment_callback(request):
+    if request.method != "POST":
+        return redirect('cart')
+
+    razorpay_order_id = request.POST.get("razorpay_order_id")
+    payment_id = request.POST.get("razorpay_payment_id")
+    signature = request.POST.get("razorpay_signature")
+
+    if not all([razorpay_order_id, payment_id, signature]):
+        return render(request, "result.html", {
+            "success": False,
+            "message": "Payment details are missing.",
+        })
+
+    order = get_object_or_404(
+        Order,
+        razorpay_order_id=razorpay_order_id,
+        payment_method="online",
+    )
+
+    try:
+        success = services.verify_payment(
+            razorpay_order_id,
+            payment_id,
+            signature,
+            order.total_amount,
+        )
+    except Exception:
+        success = False
+
+    if not success:
+        return render(request, "result.html", {
+            "success": False,
+            "order_id": order.id,  # Django database order ID
+            "payment_id": payment_id,
+            "message": (
+                "Payment could not be verified. "
+                "Please check your payment status before retrying."
+            ),
+        })
+
+    with transaction.atomic():
+        order = Order.objects.select_for_update().get(pk=order.pk)
+
+        # Prevent processing the same successful callback twice
+        if order.payment_status != "paid":
+            order.razorpay_payment_id = payment_id
+            order.payment_status = "paid"
+            order.status = "confirmed"
+            order.save(update_fields=[
+                "razorpay_payment_id",
+                "payment_status",
+                "status",
+            ])
+
+            cart = Cart.objects.filter(user=order.user).first()
+            if cart:
+                cart.items.all().delete()
+
+            transaction.on_commit(lambda: send_email(
+                subject=f"New Order #{order.id} - Happy Bakery",
+                to_email="priyakalsariya.edu@gmail.com",
+                template_name="order_confirmation_email.html",
+                context={"order": order},
+            ))
+
+    return redirect('order_success', order_id=order.id)
  
  
 def test_email(request):
@@ -204,7 +297,10 @@ def team(request):
     return render(request,'team.html')
 
 def testimonial(request):
-    return render(request,'testimonial.html')
+
+    feedbacks = Feedback.objects.select_related('user').order_by('-created_at')
+
+    return render(request,'testimonial.html',{'feedbacks': feedbacks})
 
 def error(request):
     return render(request,'404.html')
@@ -411,65 +507,159 @@ def move_wishlist_to_cart(request,wishlist_id):
 
     return redirect('cart')
 
+
+from django.db import transaction
+from . import services
+
+
 @login_required
 def checkout(request):
-    cart=get_object_or_404(Cart,user=request.user)
-
-    cart_items=cart.items.select_related('products').all()
+    cart = get_object_or_404(Cart, user=request.user)
+    cart_items = cart.items.select_related('products').all()
 
     if not cart_items.exists():
         return redirect('cart')
 
-    total=sum(
-        item.total_price
-        for item in cart_items
-    )
+    total = sum(item.total_price for item in cart_items)
 
-    if request.method=="POST":
-        full_name=request.POST.get('full_name')
-        phone=request.POST.get('phone')
-        address=request.POST.get('address')
-        city=request.POST.get('city')
-        state=request.POST.get('state')
-        pincode=request.POST.get('pincode')
-        payment_method=request.POST.get('payment_method')
+    if request.method == "POST":
+        full_name = request.POST.get('full_name', '').strip()
+        phone = request.POST.get('phone', '').strip()
+        address = request.POST.get('address', '').strip()
+        city = request.POST.get('city', '').strip()
+        state = request.POST.get('state', '').strip()
+        pincode = request.POST.get('pincode', '').strip()
+        payment_method = request.POST.get('payment_method', 'cod')
 
-        if not all([full_name,phone,address,city,state,pincode,payment_method]):
-            return render(request,'checkout.html',{'cart_items':cart_items,'total':total,'error':'Please fill all the required fields'})
+        if (
+            not all([full_name, phone, address, city, state, pincode])
+            or payment_method not in ['cod', 'online']
+        ):
+            return render(request, 'checkout.html', {
+                'cart_items': cart_items,
+                'total': total,
+                'error': 'Please fill all the required fields.',
+            })
 
-        order=Order.objects.create(
-            user=request.user,
-            full_name=full_name,
-            phone=phone,
-            address=address,
-            city=city,
-            state=state,
-            pincode=pincode,
-            payment_method=payment_method,
-            total_amount=total
-        )
-
-        for item in cart_items:
-            OrderItem.objects.create(
-                order=order,
-                product=item.products,
-                quentity=item.quentity,
-                price=item.products.price
+        # Create order and order items
+        with transaction.atomic():
+            order = Order.objects.create(
+                user=request.user,
+                full_name=full_name,
+                phone=phone,
+                address=address,
+                city=city,
+                state=state,
+                pincode=pincode,
+                payment_method=payment_method,
+                total_amount=total,
+                payment_status='pending' if payment_method == 'online' else 'cod',
             )
 
+            for item in cart_items:
+                OrderItem.objects.create(
+                    order=order,
+                    product=item.products,
+                    quentity=item.quentity,  # Check your OrderItem model field name
+                    price=item.products.price,
+                )
+
+        # Online payment: create a Razorpay order
+        if payment_method == 'online':
+            try:
+                razorpay_order = services.create_order(
+                    order.total_amount,
+                    receipt=f'bakery_{order.id}',
+                )
+
+                order.razorpay_order_id = razorpay_order['id']
+                order.save(update_fields=['razorpay_order_id'])
+
+            except Exception:
+                order.delete()
+                return render(request, 'checkout.html', {
+                    'cart_items': cart_items,
+                    'total': total,
+                    'error': 'Unable to start online payment. Please try again.',
+                })
+
+            return redirect('pay_order', order_id=order.id)
+
+        # COD: send email and clear cart
         send_email(
-            subject=f"New Order #{order.id} - Happy Bakery",
-            to_email="priyakalsariya.edu@gmail.com",
-            template_name="order_confirmation_email.html",
-            context={
-                "order": order
-            }
+            subject=f'New Order #{order.id} - Happy Bakery',
+            to_email='priyakalsariya.edu@gmail.com',
+            template_name='order_confirmation_email.html',
+            context={'order': order},
         )
+
         cart_items.delete()
 
-        return redirect('order_success',order_id=order.id)
+        return redirect('order_success', order_id=order.id)
+
+    return render(request, 'checkout.html', {
+        'cart_items': cart_items,
+        'total': total,
+    })
+# @login_required
+# def checkout(request):
+#     cart=get_object_or_404(Cart,user=request.user)
+
+#     cart_items=cart.items.select_related('products').all()
+
+#     if not cart_items.exists():
+#         return redirect('cart')
+
+#     total=sum(
+#         item.total_price
+#         for item in cart_items
+#     )
+
+#     if request.method=="POST":
+#         full_name=request.POST.get('full_name')
+#         phone=request.POST.get('phone')
+#         address=request.POST.get('address')
+#         city=request.POST.get('city')
+#         state=request.POST.get('state')
+#         pincode=request.POST.get('pincode')
+#         payment_method=request.POST.get('payment_method')
+
+#         if not all([full_name,phone,address,city,state,pincode,payment_method]):
+#             return render(request,'checkout.html',{'cart_items':cart_items,'total':total,'error':'Please fill all the required fields'})
+
+#         order=Order.objects.create(
+#             user=request.user,
+#             full_name=full_name,
+#             phone=phone,
+#             address=address,
+#             city=city,
+#             state=state,
+#             pincode=pincode,
+#             payment_method=payment_method,
+#             total_amount=total
+#         )
+
+#         for item in cart_items:
+#             OrderItem.objects.create(
+#                 order=order,
+#                 product=item.products,
+#                 quentity=item.quentity,
+#                 price=item.products.price
+#             )
+
+#         send_email(
+#             subject=f"New Order #{order.id} - Happy Bakery",
+#             to_email="priyakalsariya.edu@gmail.com",
+#             template_name="order_confirmation_email.html",
+#             context={
+#                 "order": order
+#             }
+#         )
+#         cart_items.delete()
+
+#         return redirect('order_success',order_id=order.id)
     
-    return render(request,'checkout.html',{'cart_items':cart_items,'total':total})
+#     return render(request,'checkout.html',{'cart_items':cart_items,'total':total})
 
 @login_required
 def order_success(request,order_id):
@@ -651,3 +841,25 @@ def download_invoice(request, order_id):
     pdf.save()
 
     return response
+
+@login_required
+def submit_feedback(request):
+
+    if request.method == "POST":
+
+        profession = request.POST.get('profession', '').strip()
+        rating = request.POST.get('rating')
+        message = request.POST.get('message', '').strip()
+
+        if profession and message:
+            Feedback.objects.create(
+                user=request.user,
+                profession=profession,
+                rating=rating,
+                message=message
+            )
+
+        return redirect('profile')
+
+    return redirect('profile')
+

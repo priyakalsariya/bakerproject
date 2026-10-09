@@ -1,0 +1,129 @@
+{% extends 'main.html' %}
+{% comment %} <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Pay</title>
+</head>
+<body style="font-family: Arial; text-align: center; padding-top: 60px;">
+ 
+    <h2>Pay ₹500</h2>
+    <button id="pay-button" style="padding: 12px 30px; font-size: 16px;">Pay Now</button>
+ 
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        var rzp = new Razorpay({
+            key: "{{ key_id }}",
+            order_id: "{{ order.id }}",
+            amount: "{{ order.amount }}",
+            currency: "INR",
+            name: "My Store",
+ 
+            // Payment ke baad Razorpay is URL pe khud bhej dega
+            callback_url: "{{ callback_url }}",
+            redirect: true
+        });
+ 
+        document.getElementById("pay-button").onclick = function () {
+            rzp.open();
+        };
+    </script>
+ 
+</body>
+</html> {% endcomment %}
+
+
+
+{% block content %}
+<div class="container-fluid page-header py-6 wow fadeIn">
+
+    <div class="container text-center pt-5 pb-3">
+
+        <h1 class="display-4 text-white">
+            Payment
+        </h1>
+
+        <nav aria-label="breadcrumb">
+
+            <ol class="breadcrumb justify-content-center mb-0">
+
+                <li class="breadcrumb-item">
+                    <a class="text-white"
+                       href="{% url 'index' %}">
+                        Home
+                    </a>
+                </li>
+
+                <li class="breadcrumb-item">
+                    <a class="text-white"
+                       href="{% url 'checkout' %}">
+                        Checkout
+                    </a>
+                </li>
+
+                <li class="breadcrumb-item text-primary active">
+                    Payment
+                </li>
+
+            </ol>
+
+        </nav>
+
+    </div>
+
+</div>
+
+
+<div class="container-xxl py-6">
+    <div class="container text-center">
+        <h2 class="mb-3">Complete Your Payment</h2>
+
+        <p>Happy Bakery Order #{{ order.id }}</p>
+
+        <h3 class="text-primary mb-4">
+            ₹{{ order.total_amount }}
+        </h3>
+
+        <button id="pay-button"
+                class="btn btn-primary rounded-pill py-3 px-5">
+            Pay Securely
+        </button>
+
+        <p id="payment-error" class="text-danger mt-3"
+           style="display:none;">
+            Unable to open Razorpay. Please try again.
+        </p>
+    </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+const options = {
+    key: "{{ key_id|escapejs }}",
+    amount: "{{ amount_paise }}",
+    currency: "INR",
+    name: "Happy Bakery",
+    description: "Order #{{ order.id }}",
+    order_id: "{{ order.razorpay_order_id|escapejs }}",
+    callback_url: "{{ callback_url|escapejs }}",
+    redirect: true,
+    prefill: {
+        name: "{{ order.full_name|escapejs }}"
+    },
+    theme: {
+        color: "#EAA636"
+    }
+};
+
+document.getElementById("pay-button").addEventListener("click", function () {
+    if (typeof Razorpay === "undefined") {
+        document.getElementById("payment-error").style.display = "block";
+        return;
+    }
+
+    const checkout = new Razorpay(options);
+    checkout.open();
+});
+</script>
+{% endblock content %}

@@ -101,6 +101,18 @@ class Order(models.Model):
 
     created_at=models.DateTimeField(auto_now_add=True)
 
+    razorpay_order_id = models.CharField(
+    max_length=100, blank=True, null=True
+    )
+
+    razorpay_payment_id = models.CharField(
+        max_length=100, blank=True, null=True
+    )
+
+    payment_status = models.CharField(
+    max_length=20, default='pending'
+    )
+
     def __str__(self):
         return self.user.username
 
@@ -119,3 +131,14 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return self.product.name
+
+class Feedback(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    profession = models.CharField(max_length=100)
+    rating = models.PositiveIntegerField(default=5)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_approved = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.rating} Stars"
